@@ -9,7 +9,7 @@ package main
 import (
     "pingRobot/pingrobot"
 )
-c main() {
+func main() {
 
     results := make(chan pingrobot.Result)
     pool := pingrobot.NewPool(pingrobot.Workers, results)
