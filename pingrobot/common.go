@@ -9,11 +9,15 @@ import (
 )
 
 const (
-	interval = time.Second * 3
-	timeout = time.Second
+	//Every "interval" the service will send GET requests	
+	interval = time.Minute
+	//timeout for hhtp.Client
+	timeout = time.Second * 3
+	//goroutines
 	Workers = 7
 )
 
+//websites that you wanna check
 var urls = []string{
 	"https://apple.com",
 	"https://ya.ru",

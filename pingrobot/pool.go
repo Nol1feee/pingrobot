@@ -61,6 +61,7 @@ func (p *Pool) Stop() {
 
 func (r Result) Info() string {
 	if r.error != nil {
+		//можно чекать на 5xx ответы + отправлять письмо на почту
 		return fmt.Sprintf("\n[ERROR]\nURL - %s, %s", r.Url, r.error)
 	}
 	return fmt.Sprintf("[SUCCESS]; URL - %s, statusCode - %d, responseTime - %s", r.Url, r.statusCode, r.responseTime)
