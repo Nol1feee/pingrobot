@@ -17,7 +17,7 @@ type Result struct {
 	error        error
 }
 
-type Pool struct {
+type pool struct {
 	worker       *worker
 	Jobs         chan Job
 	workersCount int
@@ -25,8 +25,8 @@ type Pool struct {
 	Wg           *sync.WaitGroup
 }
 
-func NewPool(workersCount int, result chan Result) *Pool {
-	return &Pool{
+func NewPool(workersCount int, result chan Result) *pool {
+	return &pool{
 		worker:       newWorker(timeout),
 		Jobs:         make(chan Job),
 		workersCount: workersCount,
@@ -36,30 +36,30 @@ func NewPool(workersCount int, result chan Result) *Pool {
 }
 
 
-func (p *Pool) doHtpp() {
+func (p *pool) doHtpp() {
 	for {
 		p.Res <- p.worker.process(<-p.Jobs)
 		p.Wg.Done()
 	}
 }
 
-func (p *Pool) InitWorkers() {
+func (p *pool) InitWorkers() {
 	for i := 0; i < p.workersCount; i++ {
 		go p.doHtpp()
 	}
 }
 
-func (p *Pool) Push(j Job) {
+func (p *pool) push(j Job) {
 	p.Jobs <- j
 	p.Wg.Add(1)
 }
 
-func (p *Pool) Stop() {
+func (p *pool) Stop() {
 	p.Wg.Wait()
 	close(p.Jobs)
 }
 
-func (r Result) Info() string {
+func (r Result) info() string {
 	if r.error != nil {
 		//можно чекать на 5xx ответы + отправлять письмо на почту
 		return fmt.Sprintf("\n[ERROR]\nURL - %s, %s", r.Url, r.error)

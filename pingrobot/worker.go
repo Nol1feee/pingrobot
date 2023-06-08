@@ -10,9 +10,9 @@ type worker struct {
 }
 
 func (w worker) process(j Job) Result {
-	t := time.Now()
-
 	result := Result{Url: j}
+	
+	t := time.Now()
 	resp, err := w.client.Get(j.URL)
 
 	if err != nil {
@@ -21,6 +21,7 @@ func (w worker) process(j Job) Result {
 	}
 
 	result.statusCode = resp.StatusCode
+	//если количество потоков >= количество urls, то responseTime некорректен
 	result.responseTime = time.Since(t)
 
 	return result

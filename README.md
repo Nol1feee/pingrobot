@@ -10,7 +10,6 @@ import (
     "pingRobot/pingrobot"
 )
 func main() {
-
     results := make(chan pingrobot.Result)
     pool := pingrobot.NewPool(pingrobot.Workers, results)
 
@@ -21,5 +20,5 @@ func main() {
  	pingrobot.GracefulShutdown()
 
  	pool.Stop()
- }
+}
  ```

@@ -10,11 +10,11 @@ import (
 
 const (
 	//Every "interval" the service will send GET requests	
-	interval = time.Minute
+	interval = time.Second * 10
 	//timeout for hhtp.Client
 	timeout = time.Second * 3
 	//goroutines
-	Workers = 7
+	Workers = 10
 )
 
 //websites that you wanna check
@@ -28,10 +28,10 @@ var urls = []string{
 	"https://yahoo.ru",
 }
 
-func GenerateJobs(pool *Pool) {
+func GenerateJobs(pool *pool) {
 	for {
 		for _, job := range urls {
-			pool.Push(Job{URL:job})
+			pool.push(Job{URL:job})
 		}
 		time.Sleep(interval)
 	}
@@ -40,7 +40,7 @@ func GenerateJobs(pool *Pool) {
 func ShowInfo(results <-chan Result) {
 	func() {
 		for res := range results {
-			fmt.Println(res.Info())
+			fmt.Println(res.info())
 		}
 	}()
 }
